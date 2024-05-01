@@ -3,7 +3,7 @@ import { useGetPokemonByUrlQuery } from '../../../redux/features/pokemonsSlice';
 import {StyledHomePokemonCard} from './PokemonCard.style';
 import { usePokemonDispatch, usePokemonSelector } from '../../../redux/features/pokemon-hook';
 import { savePokemonsToStore } from '../../../redux/features/reducer';
-import { useEffect } from 'react';
+
 
 type PokemonIdType= {id: string};
 type PokemonPropsType= Pokemon &  PokemonIdType;
@@ -60,7 +60,7 @@ const PokemonCard = (props: PokemonPropsType) => {
     const pokemonId=  len && splitBySlashArray[len-2];
     const rawData: PokemonRawDataType = useGetPokemonByUrlQuery<PokemonRawDataType>(pokemonId.toString());
     const dispatch = usePokemonDispatch();
-    const storedPokemons = usePokemonSelector((state) => state.filteringData.pokemonsList);
+    const storedPokemons = usePokemonSelector<{id:string; name: string}[]>((state) => state.filteringData.pokemonsList);
     const malePokemons = usePokemonSelector((state) => state.api.queries);
     console.log('malePokemons ', malePokemons);
     
@@ -75,15 +75,15 @@ const PokemonCard = (props: PokemonPropsType) => {
     if(rawData.isSuccess) {
         console.log('rawData ', rawData);
         
-        const {data: {id, name, imageUrl}}= rawData;
+        const {data: {id, name, imageUrl, sprites, stats, types}}= rawData;
         // console.log('storedPokemons ', storedPokemons);
         if(storedPokemons.length ==0) {
-            dispatch(savePokemonsToStore({id,name}));
+            dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types}));
         } else {
-            const isElementPresent= storedPokemons.find(ele => ele?.id === id);
+            const isElementPresent= storedPokemons.find(ele => ele.id === id);
             console.log('isElementPresent ', isElementPresent);
             if(!isElementPresent) {
-                dispatch(savePokemonsToStore({id,name}));
+                dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types}));
             }
         } 
 

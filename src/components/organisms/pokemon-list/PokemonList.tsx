@@ -1,4 +1,3 @@
-import { usePokemonSelector } from '../../../redux/features/pokemon-hook';
 import { type Pokemon } from '../../../types/Pokemon';
 import PokemonCard from '../../features/pokemon/PokemonCard';
 

@@ -51,19 +51,21 @@ const HomePage = () => {
 
   return (
     <StyledHomePage>
-      <main>
-        {isLoading && (<p>Loading....</p>)}
-        {!isLoading && data?.results && (
-          <PokemonList pokemonList={data.results} />
-        )}
-      </main>
+      <div className="home-page">
+        <main>
+          {isLoading && (<p>Loading....</p>)}
+          {!isLoading && data?.results && (
+            <PokemonList pokemonList={data.results} />
+          )}
+        </main>
 
-      <footer>
-          <div className='pokemon-pagination'>
-            {data?.previous && (<button onClick={previousClickHandler}>Previous</button>)}
-            {data?.next && (<button onClick={nextClickHandler}>Next</button>)}
-        </div>
-      </footer>
+        <footer>
+            <div className='pokemon-pagination'>
+              {data?.previous && (<button onClick={previousClickHandler}>Previous</button>)}
+              {data?.next && (<button onClick={nextClickHandler}>Next</button>)}
+          </div>
+        </footer>
+      </div>
    </StyledHomePage>
     
   )
