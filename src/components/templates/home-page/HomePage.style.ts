@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const StyledHomePage= styled.main`
   .grid-container {
     width: 1374px;
-    height: 921px;
+    /* height: 921px; */
     margin-top: 244px;
     margin-left: 69px;
     display: grid;

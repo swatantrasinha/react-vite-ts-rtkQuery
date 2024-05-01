@@ -1,6 +1,9 @@
 import { type Pokemon } from '../../../types/Pokemon'
 import { useGetPokemonByUrlQuery } from '../../../redux/features/pokemonsSlice';
 import {StyledHomePokemonCard} from './PokemonCard.style';
+import { usePokemonDispatch, usePokemonSelector } from '../../../redux/features/pokemon-hook';
+import { savePokemonsToStore } from '../../../redux/features/reducer';
+import { useEffect } from 'react';
 
 type PokemonIdType= {id: string};
 type PokemonPropsType= Pokemon &  PokemonIdType;
@@ -56,7 +59,13 @@ const PokemonCard = (props: PokemonPropsType) => {
     const len= splitBySlashArray?.length;
     const pokemonId=  len && splitBySlashArray[len-2];
     const rawData: PokemonRawDataType = useGetPokemonByUrlQuery<PokemonRawDataType>(pokemonId.toString());
-   
+    const dispatch = usePokemonDispatch();
+    const storedPokemons = usePokemonSelector((state) => state.filteringData.pokemonsList);
+    const malePokemons = usePokemonSelector((state) => state.api.queries);
+    console.log('malePokemons ', malePokemons);
+    
+    
+
     if(rawData.isFetching) {
         return (<p>Loading Pokemon..</p>)
     } else if(rawData.isError) {
@@ -64,7 +73,20 @@ const PokemonCard = (props: PokemonPropsType) => {
     }
 
     if(rawData.isSuccess) {
+        console.log('rawData ', rawData);
+        
         const {data: {id, name, imageUrl}}= rawData;
+        // console.log('storedPokemons ', storedPokemons);
+        if(storedPokemons.length ==0) {
+            dispatch(savePokemonsToStore({id,name}));
+        } else {
+            const isElementPresent= storedPokemons.find(ele => ele?.id === id);
+            console.log('isElementPresent ', isElementPresent);
+            if(!isElementPresent) {
+                dispatch(savePokemonsToStore({id,name}));
+            }
+        } 
+
         return (
             <StyledHomePokemonCard>
                 <div className='pokemon-card'>

@@ -1,15 +1,13 @@
-
+import { usePokemonSelector } from '../../../redux/features/pokemon-hook';
 import { type Pokemon } from '../../../types/Pokemon';
-
 import PokemonCard from '../../features/pokemon/PokemonCard';
 
 
-
-type PokemonListProps = {
-    pokemonList: Pokemon[]
+export type PokemonListProps = {
+    pokemonList: Pokemon[] | null
 }
 const PokemonList = ({pokemonList}: PokemonListProps) => {
-    console.log('pokemonList : ', pokemonList);
+  
   return (
            <div className="grid-container">
             
@@ -20,7 +18,6 @@ const PokemonList = ({pokemonList}: PokemonListProps) => {
                 return (
                     <div key={uniqueKey} className='pokemon'>
                         <PokemonCard name={name} id={(index+1).toString()} url={url} />
-                        {/* <h5>Name: {name}</h5> */}
                     </div>
                   )
               }

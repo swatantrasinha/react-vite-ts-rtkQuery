@@ -16,8 +16,7 @@ const MultiSelectDropdown = ({dropdownLabel, dropdownOptions}:MultiSelectDropdow
     
     const [optionsArray, setOptionsArray] = useState(checkboxOptions);
 
-    console.log('checkboxOptions : ', checkboxOptions);
-    console.log('optionsArray: ', optionsArray);
+    
 
     const dropdownHandler = () => {
         setShowOptions(!showOptions);

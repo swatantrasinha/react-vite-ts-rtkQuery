@@ -4,7 +4,8 @@ import { filterAndStore } from "../../utils/filterAndStore-functions";
 
 const initialState = {
     types: filterAndStore(typeOptions),
-    gender: filterAndStore(genderOptions)    
+    gender: filterAndStore(genderOptions), 
+    pokemonsList:[],
 }
 
 
@@ -18,31 +19,15 @@ export const myReducer= createSlice({
         changePokemonTypesOptions(state, action:PayloadAction<string[]>){
             state.types=action.payload
         },
-        // addOptionsToFilteringData(state, action:PayloadAction<payload:string[]>){
-        //     switch (action.type) {
-        //         case 'pokemonType':{
-        //             state.types.push({
-        //                 ...state.gender,
-        //                 action.payload
-        //             })
-        //             break;
-        //         }
-                    
-        //         case 'pokemonGender':{
-        //             state.gender.push({
-        //                 ...state.types,
-        //                 action.payload
-        //             })
-        //             break;
-        //         }
-
-        //         default: {
-        //             break;
-        //         }
-        //     }
-          
-        // }, 
+        savePokemonsToStore(state,action: PayloadAction<any>){
+            if(state.pokemonsList.length === 20) {
+                state.pokemonsList.length=0;
+                state.pokemonsList.push(action.payload);
+            } else {
+                state.pokemonsList.push(action.payload);
+            }
+        }
     }
 })
 
-export const {changePokemonGenderOptions, changePokemonTypesOptions}= myReducer.actions;
+export const {changePokemonGenderOptions, changePokemonTypesOptions, savePokemonsToStore}= myReducer.actions;
