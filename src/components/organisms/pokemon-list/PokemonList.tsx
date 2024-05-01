@@ -1,24 +1,9 @@
-import React from 'react'
+
 import { type Pokemon } from '../../../types/Pokemon';
-import { useGetPokemonByUrlQuery } from '../../../redux/features/pokemonsSlice';
+
 import PokemonCard from '../../features/pokemon/PokemonCard';
 
-type PokemonRawDataType= {
-    isError:boolean;
-    isFetching: boolean;
-    isLoading: boolean;
-    isSuccess: boolean;
-    data: {
-        id: number;
-        sprites: {
-            other: {
-                dream_world: {
-                    front_default: string
-                }
-            }
-        }
-    }
-}
+
 
 type PokemonListProps = {
     pokemonList: Pokemon[]

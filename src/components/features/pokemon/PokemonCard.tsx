@@ -1,4 +1,3 @@
-import React from 'react'
 import { type Pokemon } from '../../../types/Pokemon'
 import { useGetPokemonByUrlQuery } from '../../../redux/features/pokemonsSlice';
 import {StyledHomePokemonCard} from './PokemonCard.style';
