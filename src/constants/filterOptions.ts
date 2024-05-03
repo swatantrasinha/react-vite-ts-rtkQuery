@@ -1,7 +1,7 @@
 export const genderOptions= [
     {label:'Male', value:'male'},
     {label:'Femal', value:'female'},
-    {label:'Other', value:'other'},
+    {label:'Other', value:'genderless'},
   ];
 
   export const typeOptions= [

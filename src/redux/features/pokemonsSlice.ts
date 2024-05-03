@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { type RawDataPokemons } from '../../types/Pokemon';
 import { type PokemonData } from '../../components/features/pokemon/PokemonCard';
+import { getPokemonNamesByGender } from '../../utils/filterAndStore-functions';
+
 
 
 export const pokemonsApi = createApi({
@@ -27,28 +29,29 @@ export const pokemonsApi = createApi({
         //  
         getPokemonsWithGender: builder.query({
             async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
-
-            const femalePokemonsResult = await fetchWithBQ('gender/1')
+              
+            const femalePokemonsResult  = await fetchWithBQ('gender/1')
             if (femalePokemonsResult.error) {
               throw femalePokemonsResult.error;
             }
-            const femalePokemons = femalePokemonsResult.data;
-              
+            const femalePokemonsList= getPokemonNamesByGender(femalePokemonsResult);
             const malePokemonsResult = await fetchWithBQ(`gender/2`)
             if (malePokemonsResult.error) {
               throw malePokemonsResult.error;
             }
-            const malePokemons = malePokemonsResult.data;
+            
+            const malePokemonsList= getPokemonNamesByGender(malePokemonsResult);
 
-            const otherPokemonsResult = await fetchWithBQ(`gender/3`)
-            if (otherPokemonsResult.error) {
-              throw otherPokemonsResult.error;
+            const genderlessPokemonsResult = await fetchWithBQ(`gender/3`)
+            if (genderlessPokemonsResult.error) {
+              throw genderlessPokemonsResult.error;
             }
-            const otherPokemons = otherPokemonsResult.data;
-
-              return (malePokemonsResult.data && femalePokemons)
-                ? { data: { malePokemons, femalePokemons, otherPokemons }}
-                : { error: malePokemonsResult.error || femalePokemonsResult.error || otherPokemonsResult.error }
+            
+            const genderlessPokemonsList= getPokemonNamesByGender(genderlessPokemonsResult);
+            
+              return (malePokemonsList && femalePokemonsList && genderlessPokemonsList)
+                ? { data: { male: malePokemonsList, female: femalePokemonsList, genderless: genderlessPokemonsList }}
+                : { error: malePokemonsResult.error || femalePokemonsResult.error || genderlessPokemonsResult.error }
             },
         }),
 

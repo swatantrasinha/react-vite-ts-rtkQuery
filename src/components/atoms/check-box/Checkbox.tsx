@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePokemonDispatch, usePokemonSelector } from "../../../redux/features/pokemon-hook";
+import { usePokemonDispatch } from "../../../redux/features/pokemon-hook";
 import { changePokemonGenderOptions, changePokemonTypesOptions } from "../../../redux/features/reducer";
 import { TYPE_POKEMON_GENDER, TYPE_POKEMON_TYPE } from "../../../constants/filterTypes";
 
@@ -15,9 +15,7 @@ type CheckboxPropsType= {
 
 const Checkbox = ({checkboxLabel,checkboxValue, checkboxId, optionsArray, setOptionsArray, filterType}: CheckboxPropsType) => {
     const [isChecked, setIsChecked] = useState<boolean>(true);
-    const filteringData = usePokemonSelector((state) => state.filteringData);
     const dispatch = usePokemonDispatch();
-  console.log('filteringData : ', filteringData);
   
     const clickHandler= () => {
    
