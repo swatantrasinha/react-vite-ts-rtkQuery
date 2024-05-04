@@ -1,22 +1,29 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {StyledMultiSelectDropdown} from './MultiSelectDropdown.style'
 import Checkbox from '../../atoms/check-box/Checkbox';
+
 
 type MultiSelectDropdownPropsType = {
     dropdownLabel: string;
     dropdownOptions: {label:string; value: string}[];
+    resetFilters: boolean;
+    
 }
-const MultiSelectDropdown = ({dropdownLabel, dropdownOptions}:MultiSelectDropdownPropsType) => {
-    const [showOptions, setShowOptions] = useState<boolean>(false);
-
+const MultiSelectDropdown = ({dropdownLabel, dropdownOptions, resetFilters}:MultiSelectDropdownPropsType) => {
     const checkboxOptions: string[]=[];
+    const checkboxContainerRef=useRef(null);
+   
+
     dropdownOptions.map(ele => {
         checkboxOptions.push(ele.value);
     })
-    
+
+
+
+    const [showOptions, setShowOptions] = useState<boolean>(false);
     const [optionsArray, setOptionsArray] = useState(checkboxOptions);
 
-    
+
 
     const dropdownHandler = () => {
         setShowOptions(!showOptions);
@@ -40,7 +47,7 @@ const MultiSelectDropdown = ({dropdownLabel, dropdownOptions}:MultiSelectDropdow
                         </div> 
                     </button>  
                     {showOptions && (
-                        <div className='dropdown-options border rounded-lg border-black z-10'>
+                        <div className='dropdown-options border rounded-lg border-black z-10' ref={checkboxContainerRef}>
                            {dropdownOptions.map((ele, index) => (
                             <div key={`type-${ele.label}-${index}`}>
                                 <div className='type-option flex flex-row-reverse justify-end mx-2'> 
@@ -51,6 +58,7 @@ const MultiSelectDropdown = ({dropdownLabel, dropdownOptions}:MultiSelectDropdow
                                         checkboxId={`chkbox-type-${ele.label}`} 
                                         optionsArray={optionsArray}
                                         setOptionsArray={setOptionsArray}
+                                        resetFilters={resetFilters}
                                         />
                                 </div>
                             </div>

@@ -1,9 +1,14 @@
 import MultiRangeSlider from "multi-range-slider-react";
 import { type RefObject, useEffect, useState } from "react";
 import { StyledTwoPointerSlider } from "./TwoPointersSlider.style";
+import {STAT_RANGE} from '../../../types/stat-range-type';
 
 type TwoPointersSliderPropsType= {
-  parentRef: RefObject<HTMLDivElement>
+  parentRef: RefObject<HTMLDivElement>;
+  rangeType: string;
+  resetFilters: boolean;
+  setStatRange: Function;
+
 }
 
 type ChangeResult = {
@@ -13,12 +18,16 @@ type ChangeResult = {
 	maxValue: number;
 };
 
-const TwoPointersSlider = ({parentRef}: TwoPointersSliderPropsType) => {
+const TwoPointersSlider = ({parentRef, rangeType, setStatRange, resetFilters}: TwoPointersSliderPropsType) => {
   const [minValue, set_minValue] = useState(70);
   const [maxValue, set_maxValue] = useState(150);
 
   useEffect(() => {
-    // console.log('parentRef : ', parentRef.current);
+    set_minValue(70);
+    set_maxValue(150);
+  }, [resetFilters]);
+  
+  useEffect(() => {
     if(parentRef && parentRef.current) {
       const parentElement= parentRef.current;
       const thumbLeft= parentElement.getElementsByClassName('thumb-left')[0];
@@ -26,15 +35,15 @@ const TwoPointersSlider = ({parentRef}: TwoPointersSliderPropsType) => {
       if(thumbLeft) {
         thumbLeft.setAttribute('data-before', `${minValue}`);
         thumbRight.setAttribute('data-before', `${maxValue}`);
+        setStatRange((prevRanges : STAT_RANGE) => {
+          return {
+            ...prevRanges,
+            [rangeType]: {minValue,maxValue},
+          }
+        })
       }
     }
     
-    // const thumbLeft= document.getElementsByClassName('thumb-left')[0];
-    // const thumbRight= document.getElementsByClassName('thumb-right')[0];
-    // if(thumbLeft) {
-    //   thumbLeft.setAttribute('data-before', `${minValue}`);
-    //   thumbRight.setAttribute('data-before', `${maxValue}`);
-    // }
   }, [minValue,maxValue])
   
   const handleInput = (e: ChangeResult ) => {
@@ -43,7 +52,8 @@ const TwoPointersSlider = ({parentRef}: TwoPointersSliderPropsType) => {
   };
   return (
     <StyledTwoPointerSlider>
-      {/* <span>minValue: {minValue}</span> */}
+      <span>minValue: {minValue}</span>
+      <span>maxValue: {maxValue}</span>
       <div className="two-pointer-slider">
         <MultiRangeSlider
           min={0}

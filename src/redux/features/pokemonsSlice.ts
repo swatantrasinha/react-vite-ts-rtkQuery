@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { type RawDataPokemons } from '../../types/Pokemon';
-import { type PokemonData } from '../../components/features/pokemon/PokemonCard';
+import { type PokemonData } from '../../types/Pokemon';
 import { getPokemonNamesByGender } from '../../utils/filterAndStore-functions';
 
 
@@ -26,7 +26,7 @@ export const pokemonsApi = createApi({
           return formattedResponse;
         },
         }),
-        //  
+        
         getPokemonsWithGender: builder.query({
             async queryFn(_arg, _queryApi, _extraOptions, fetchWithBQ) {
               
@@ -55,7 +55,7 @@ export const pokemonsApi = createApi({
             },
         }),
 
-        //
+        
     })
 });
 

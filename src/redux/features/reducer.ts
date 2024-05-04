@@ -1,19 +1,25 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { genderOptions, typeOptions } from "../../constants/filterOptions";
 import { filterAndStore } from "../../utils/filterAndStore-functions";
-import { type PokemonData } from "../../components/features/pokemon/PokemonCard";
+import { type PokemonData } from "../../types/Pokemon";
+import {type STAT_RANGE} from '../../types/stat-range-type';
 
 type InitialStateType ={
     types: string[];
     gender: string[];
+    searchValue: string | null;
+    stats:  STAT_RANGE | null;
     pokemonsList: PokemonData[] | [];
     filteredPokemonsList: PokemonData[] | [];
 }
 const initialState:InitialStateType = {
     types: filterAndStore(typeOptions),
     gender: filterAndStore(genderOptions), 
+    searchValue: null,
+    stats: null,
     pokemonsList: [],
-    filteredPokemonsList:[]
+    filteredPokemonsList:[],
+
 }
 
 
@@ -27,12 +33,17 @@ export const myReducer= createSlice({
         changePokemonTypesOptions(state, action:PayloadAction<string[]>){
             state.types=action.payload
         },
+        saveSearchInputValue(state, action:PayloadAction<string | null>){
+            state.searchValue=action.payload
+        },
+        savePokemonsStatsFilters(state, action){
+            state.stats=action.payload
+        },
         savePokemonsToStore(state,action: PayloadAction<PokemonData>){
             if(state.pokemonsList.length === 20) {
                 state.pokemonsList.length=0;
                 state.pokemonsList.push(action.payload);
             } else {
-                // state.pokemonsList.push(action.payload);
                 state.pokemonsList= [...state.pokemonsList, action.payload];
             }
         },
@@ -60,17 +71,17 @@ export const myReducer= createSlice({
             } else {
                 const newArray = [...state.filteredPokemonsList].filter(ele => ele.id !== action.payload.id);
                 state.filteredPokemonsList = newArray;
-                // for (let i = 0; i < [...state.filteredPokemonsList].length; i++) {
-                //     const element = [...state.filteredPokemonsList][i];
-                //     if(element.id === action.payload.id) {
-                //         const newArray = [...state.filteredPokemonsList];
-
-                //         break;
-                //     }
-                // }
             }
         }
     }
 })
 
-export const {changePokemonGenderOptions, changePokemonTypesOptions, savePokemonsToStore, addFilteredPokemonsToStore, removeUnfilteredPokemonsFromStore}= myReducer.actions;
+export const {
+    changePokemonGenderOptions, 
+    changePokemonTypesOptions, 
+    saveSearchInputValue,
+    savePokemonsStatsFilters,
+    savePokemonsToStore, 
+    addFilteredPokemonsToStore, 
+    removeUnfilteredPokemonsFromStore
+    }= myReducer.actions;

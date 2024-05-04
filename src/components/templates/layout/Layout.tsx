@@ -1,43 +1,39 @@
-import { Link, Routes, Route } from 'react-router-dom';
-import Pokemon from '../../features/pokemon/Pokemon';
-import HomePage from '../home-page/HomePage';
-import { StyledLayout } from './Layout.style';
-import About from '../../features/about/About';
-import SearchSection from '../../organisms/search-section/SearchSection';
+import { Routes, Route } from "react-router-dom";
+import HomePage from "../home-page/HomePage";
+import { StyledLayout } from "./Layout.style";
+import SearchSection from "../../organisms/search-section/SearchSection";
+import { useState } from "react";
+import HeaderSection from "../../organisms/header-section/HeaderSection";
+import PokemonDetails from "../pokemon-details/PokemonDetails";
 
- const Layout = () => {
+const Layout = () => {
+  const [resetFilters, setResetFilters] = useState<boolean>(false);
 
-      
-      const getRoutingSetup = () => {
-        return (
-          <>
-            <nav>
-              <ul>
-                <li> <Link to="/">Home</Link></li>
-                <li> <Link to="/about">About</Link></li>
-              </ul>
-            </nav>
+  const getRoutingSetup = () => {
+    return (
+      <>
+      <HeaderSection />
+        <SearchSection
+          resetFilters={resetFilters}
+          setResetFilters={setResetFilters}
+        />
 
-            <SearchSection />
-
-             <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/pokemon/:id" element={<Pokemon/>} />
-                <Route path="*" element={<div>Not Found </div>} />
-            </Routes> 
-          </>
-        )
-      };
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage setResetFilters={setResetFilters} />}
+          />
+          <Route path="/pokemon" element={<PokemonDetails />} />
+          <Route path="*" element={<div>Not Found </div>} />
+        </Routes>
+      </>
+    );
+  };
 
   return (
     <StyledLayout>
-      <div className="pokemon-layout">
-        {getRoutingSetup()}
-      </div>
-      
+      <div className="pokemon-layout">{getRoutingSetup()}</div>
     </StyledLayout>
-    
-  )
-}
+  );
+};
 export default Layout;

@@ -1,21 +1,7 @@
 import { FetchBaseQueryMeta } from "@reduxjs/toolkit/query";
-import { PokemonData } from "../components/features/pokemon/PokemonCard";
-type RequiredForEvolution= {
-    name: string;
-    url: string;
-  }
-  
-  type Pokemon_Species= {
-    pokemon_species: RequiredForEvolution
-    rate: number;
-  }
-  
-  type PokemonGenderRawDataType = {
-    id: number;
-    name: string;
-    pokemon_species_details: Pokemon_Species[];
-    required_for_evolution: RequiredForEvolution[];
-  }
+import { PokemonData, PokemonGenderRawDataType } from "../types/Pokemon";
+import {genderOptions, typeOptions} from '../constants/filterOptions'
+import { STAT_RANGE, StatEnum } from "../types/stat-range-type";
 
 export const filterAndStore= (objArray: {label:string, value: string}[]) => {
     const result: string[]  = [];
@@ -28,7 +14,7 @@ export const filterAndStore= (objArray: {label:string, value: string}[]) => {
 
 export const checkTypeFilters = (pokemon:PokemonData, typesFilters:string[]): boolean => {
     let flag:boolean= false;
-     if(typesFilters.length ===6) {
+     if(typesFilters.length === typeOptions.length) {
         return true;
     } else {
         const pokemonTypes= Array.from(pokemon.types).map(ele => ele.type.name);    
@@ -45,7 +31,7 @@ export const checkTypeFilters = (pokemon:PokemonData, typesFilters:string[]): bo
 
 export const checkGenderFilters = (pokemon:PokemonData, genderFilters:string[], pokemonsWithgenderData:any): boolean => {
     let flag:boolean= false;
-     if(genderFilters.length === 3) {
+     if(genderFilters.length === genderOptions.length) {
         return true;
     } else {
         const pokemonName= pokemon.name;      
@@ -66,4 +52,23 @@ export const getPokemonNamesByGender = (pokemonsResult: { error?: undefined; dat
     const pokemonsArray  = Array.from(pokemonsData.pokemon_species_details);
     const pokemonsList= pokemonsArray.map(ele => ele.pokemon_species.name)
     return pokemonsList;
+}
+
+export const checkStatsFilters = (pokemon:PokemonData, statsFilter:STAT_RANGE): boolean => {    
+    let result: boolean= true;
+    if(!statsFilter) {
+        return result;
+    }
+    for (let index = 0; index < pokemon.stats.length; index++) {
+        const ele = pokemon.stats[index];
+        const statType= ele.stat.name;
+        const statValue= ele.base_stat;
+        const minValue= statsFilter[`${statType}` as StatEnum].minValue;
+        const maxValue= statsFilter[`${statType}` as StatEnum].maxValue;
+        if((statValue < minValue) || (statValue > maxValue)) {
+            result= false;
+            break;
+        }
+    }
+    return result;
 }

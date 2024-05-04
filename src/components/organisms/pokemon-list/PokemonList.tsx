@@ -1,12 +1,8 @@
-import { type Pokemon } from '../../../types/Pokemon';
-import PokemonCard, { type PokemonData } from '../../features/pokemon/PokemonCard';
+import { PokemonListProps, type PokemonBasicData } from '../../../types/Pokemon';
+import PokemonCard from '../../features/pokemon-card/PokemonCard';
 import FilteredPokemons from './FilteredPokemons';
 
-export type PokemonListProps = {
-    pokemonList: Pokemon[] | PokemonData[] | null;
-    isFilterApplied: boolean;
-}
-const PokemonList = ({pokemonList, isFilterApplied}: PokemonListProps) => {
+const PokemonList = ({pokemonList, isFilterApplied, setResetFilters}: PokemonListProps) => {
   
   if(isFilterApplied) {
     return (
@@ -15,7 +11,9 @@ const PokemonList = ({pokemonList, isFilterApplied}: PokemonListProps) => {
           <FilteredPokemons
             uniqueId={`pokemon-${index}`} 
             isFilterApplied={isFilterApplied}
-            pokemon={pokemon}/>
+            pokemon={pokemon}
+            setResetFilters={setResetFilters}
+            />
           ))}
       </div>
     )
@@ -25,7 +23,7 @@ const PokemonList = ({pokemonList, isFilterApplied}: PokemonListProps) => {
            <div className="grid-container">            
             {!isFilterApplied && pokemonList?.map((pokemon,index) => {
               const uniqueKey= `pokemon-${index}`;
-              const {name, url}= pokemon as Pokemon;
+              const {name, url}= pokemon as PokemonBasicData;
               if(name && url) {
                 const pokemon= {
                   name,
@@ -34,7 +32,7 @@ const PokemonList = ({pokemonList, isFilterApplied}: PokemonListProps) => {
                 }
                 return (
                     <div key={uniqueKey} className='pokemon'>
-                      <PokemonCard  isFilterApplied={isFilterApplied} pokemonProperties={pokemon} />
+                      <PokemonCard  pokemonProperties={pokemon} />
                     </div>
                   )
               }

@@ -2,6 +2,8 @@ import styled from 'styled-components';
 
 export const StyledSearchInput= styled.div`
   .search-input {  
+    position: relative;
+
     .input-textbox {
         display: flex;
         flex-direction: column;
@@ -20,6 +22,13 @@ export const StyledSearchInput= styled.div`
           line-height: 18.75px;
           text-align: left;
         }
+    }
+
+    button.search-btn {
+      position: absolute;
+      top: 50%;
+      right: 5%;
+}
     }
   }
 `;
