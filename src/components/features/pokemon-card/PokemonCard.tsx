@@ -24,15 +24,18 @@ const PokemonCard = (props: PokemonCardPropsType) => {
     }
 
     if(rawData.isSuccess && pokemonsWithgenderData) {       
-        const {data: {id, name, imageUrl, sprites, stats, types, weight, height}}= rawData;
+        const {data: {id, name, imageUrl, sprites, stats, types, weight, height, abilities}}= rawData;
+        
+        
+        
         const pokemonGender  =  findPokemonGenderByName(name,pokemonsWithgenderData) || [];
         
         if(storedPokemons.length ==0) {
-            dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, pokemonGender}));
+            dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, abilities, pokemonGender}));
         } else {
             const isElementPresent= storedPokemons.find(ele => ele.id === id);
             if(!isElementPresent) {
-                dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, pokemonGender}));
+                dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, abilities, pokemonGender}));
             }
         } 
         
@@ -42,8 +45,12 @@ const PokemonCard = (props: PokemonCardPropsType) => {
             imageUrl,
             weight, 
             height,
+            abilities,
             pokemonGender,
+            stats,
         }
+        
+        
         return (
             <Pokemon pokemonProperties={pokemonData} />
           )

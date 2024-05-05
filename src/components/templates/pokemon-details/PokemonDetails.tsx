@@ -7,18 +7,14 @@ import closeIcon from "/icons/close-icon.svg";
 import { useGetPokemonDescriptionQuery } from "../../../redux/features/pokemonsSlice.ts";
 import { PokemonDescriptionRawDataType } from "../../../types/Pokemon.ts";
 import PokemonDescription from "../../molecules/pokemon-description/PokemonDescription.tsx";
-// import { usePokemonSelector } from "../../../redux/features/pokemon-hook.ts";
+import ProgressBar from "../../atoms/progress-bar/ProgressBar.tsx";
 
 const PokemonDetails = () => {
   const { id } = useParams();
   const location = useLocation();
-  const { name, imageUrl , weight, height, pokemonGender} = location.state;
-
+  const { name, imageUrl , weight, height, abilities, pokemonGender, stats} = location.state;
   const responseFromApi: PokemonDescriptionRawDataType = useGetPokemonDescriptionQuery<PokemonDescriptionRawDataType>(id!.toString());
-
   
-  // const  getStoredPokemons= usePokemonSelector<{id:string; name: string}[]>((state) => state.filteringData.pokemonsList);
-  // getStoredPokemonById
   if (responseFromApi.isFetching) {
     return <p>loading desc..</p>;
   } else if (responseFromApi.isError) {
@@ -144,6 +140,72 @@ const PokemonDetails = () => {
               </div>
 
             </section>
+
+            <section className="properties-section flex justify-between m-4">
+                <div className="second-row-properties pokemon-abilities">
+                  <div className="property-label abilities-label">Abilities</div>
+                  <div className="property-value height-value">
+                  {abilities?.map((
+                    ele: {ability: {name:string; url: string}},
+                    index:number
+                  ) => {
+                    const uniqueKey=`pokemon-ability--${index}`;
+                    
+                    if(index === (abilities.length-1)) {
+                      return (
+                        <span key={uniqueKey}>{`${ele.ability.name}`}</span>
+                      )
+                    }
+                    return (
+                      <>
+                      <span key={uniqueKey}>{`${ele.ability.name},`}</span>
+                      <br/>
+                      </>
+                  )})}
+                  </div>
+                </div>
+
+                <div className="second-row-properties pokemon-types">
+                  <div className="property-label types-label">Types</div>
+                  <div className="property-value types-value">
+                    <span className="pokemon-property-types">Fire</span>
+                    <span className="pokemon-property-types">Flying</span>
+                  </div>
+              </div>
+
+              <div className="second-row-properties pokemon-weak-against">
+                  <div className="property-label pokemon-weak-agains-label">Weak Against</div>
+                  <div className="property-value weipokemon-weak-againsght-value">
+                      <span className="pokemon-property-types">Fighting</span>
+                      <span className="pokemon-property-types">Ground</span>
+                      <span className="pokemon-property-types">Steel</span>
+                      <span className="pokemon-property-types">Water</span>
+                      <span className="pokemon-property-types">Grass</span>
+                  </div>
+              </div>
+            </section>
+
+            <section className="stats-section-container  mx-4 my-16">
+                <h1 className="stats-heading p-8">Stats</h1>
+                <div className="stats-section flex justify-between">
+                  {stats.map((statData: {base_stat: number; stat: {name: string}},index: number) => {
+                        const uniqueId= `stat-type-${index}`;
+                        const {base_stat, stat: {name}}= statData;
+                        return (
+                          <div key={uniqueId} className="stat-label-and-progress-bar">
+                            <div className="stat-type-label">{name}</div>
+                            <div className="stat-type-progress-bar">
+                            <ProgressBar value={(base_stat/120)*100}/>
+                            </div>
+                          </div>
+                        )
+                      })} 
+              </div>
+            
+
+            </section>
+           
+
           </main>
         </div>
       </StyledPokemonDetails>

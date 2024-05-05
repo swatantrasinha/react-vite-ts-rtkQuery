@@ -14,7 +14,7 @@ export const pokemonsApi = createApi({
 
     getPokemonByUrl: builder.query<PokemonData, string> ({
         query: (pokemonId) => `pokemon/${pokemonId}/`,
-          transformResponse: (response: PokemonData) => {   
+          transformResponse: (response: PokemonData) => {
           const formattedResponse= {
             id: response.id, 
             name: response.name,
@@ -24,6 +24,7 @@ export const pokemonsApi = createApi({
             sprites: response.sprites,
             height: response.height,
             weight: response.weight,
+            abilities:response.abilities, // .map(ele => ele.ability),
           };
           return formattedResponse;
         },

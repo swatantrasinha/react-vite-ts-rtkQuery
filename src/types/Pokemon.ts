@@ -22,7 +22,6 @@ export type RawDataPokemons = {
 };
 
 export type PokemonPropsType = {
-  // isFilterApplied?: boolean;
   pokemonProperties: PokemonPropsTypeWithFilter | PokemonData;
 };
 
@@ -63,6 +62,7 @@ export type PokemonData = {
   sprites: PokemonSpritesType;
   height: number;
   weight: number;
+  abilities: {ability: {name: string}}[]
   pokemonGender?: string[] | undefined;
 };
 

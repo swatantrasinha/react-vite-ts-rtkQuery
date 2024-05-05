@@ -4,10 +4,12 @@ import { Link } from 'react-router-dom';
 import { generatePokemonId } from '../../../utils/string-manipulation';
 
 const Pokemon = (props: PokemonPropsType) => {
-    const {name, imageUrl, id, weight, height, pokemonGender}= props.pokemonProperties as PokemonData;
-//    debugger;
 
-    const pokemonDataForDetailsPage = { name,imageUrl, weight, height, pokemonGender };
+    const {name, imageUrl, id, weight, height, abilities, pokemonGender, stats}= props.pokemonProperties as PokemonData;
+    
+
+
+    const pokemonDataForDetailsPage = { name,imageUrl, weight, height, abilities, pokemonGender, stats };
     return (
         <StyledPokemon>
         <Link 
