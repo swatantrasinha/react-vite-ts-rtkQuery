@@ -20,8 +20,8 @@ const SearchInput = () => {
     <StyledSearchInput>
       <form className='search-input' onSubmit={formSubmitHandler}>
         <InputTextbox labelValue='Search by' inputType='text' placeholderValue='Name or Number' searchInputRef={searchInputRef} />
-        <button className='search-btn'> 
-          <img src={searchIcon} />
+        <button className='search-btn' aria-label='pokemon search'> 
+          <img src={searchIcon} alt='pokemon search button'/>
         </button>
       </form>
     </StyledSearchInput>

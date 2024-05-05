@@ -46,6 +46,18 @@ export const checkGenderFilters = (pokemon:PokemonData, genderFilters:string[], 
         return flag;
     }
 }
+export const findPokemonGenderByName = (pokemonName: string,pokemonsWithgenderData:any ): (string[] | []) => {
+    const result:string[]=[];
+    const checkandAddIfGenderInList= (genderType: string) => {
+        if(pokemonsWithgenderData[`${genderType}`].includes(pokemonName)) {
+            result.push(genderType);
+        }
+    }
+    checkandAddIfGenderInList('male');
+    checkandAddIfGenderInList('female');
+    checkandAddIfGenderInList('genderless');
+    return result;
+};
 
 export const getPokemonNamesByGender = (pokemonsResult: { error?: undefined; data: (PokemonGenderRawDataType | unknown); meta?: FetchBaseQueryMeta | undefined; }) => {
     const pokemonsData = pokemonsResult.data as PokemonGenderRawDataType;
@@ -72,3 +84,4 @@ export const checkStatsFilters = (pokemon:PokemonData, statsFilter:STAT_RANGE): 
     }
     return result;
 }
+

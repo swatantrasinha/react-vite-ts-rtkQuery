@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { type RawDataPokemons } from '../../types/Pokemon';
+import {  RawPokemonDescriptionType, ResponseFromApiPokemonDescriptionType,  type RawDataPokemons } from '../../types/Pokemon';
 import { type PokemonData } from '../../types/Pokemon';
 import { getPokemonNamesByGender } from '../../utils/filterAndStore-functions';
 
@@ -14,14 +14,16 @@ export const pokemonsApi = createApi({
 
     getPokemonByUrl: builder.query<PokemonData, string> ({
         query: (pokemonId) => `pokemon/${pokemonId}/`,
-          transformResponse: (response: PokemonData) => {            
+          transformResponse: (response: PokemonData) => {   
           const formattedResponse= {
             id: response.id, 
             name: response.name,
             imageUrl: response.sprites.other.dream_world.front_default,
             stats: response.stats,
             types: response.types,
-            sprites: response.sprites
+            sprites: response.sprites,
+            height: response.height,
+            weight: response.weight,
           };
           return formattedResponse;
         },
@@ -55,8 +57,26 @@ export const pokemonsApi = createApi({
             },
         }),
 
+       
         
+        getPokemonDescription: builder.query<ResponseFromApiPokemonDescriptionType, string> ({
+          query: (pokemonId) => `pokemon-species/${pokemonId}/`,
+            transformResponse: (response: (RawPokemonDescriptionType )) => {   
+              const rawEggGroupsData  = response.egg_groups;
+              const eggGroups= rawEggGroupsData.map(ele => ele.name);
+              const raw_flavor_text_entries= response.flavor_text_entries;              
+              const descriptionEnglishArray= raw_flavor_text_entries.filter(ele => (ele.language.name === 'en'))
+              const descriptionArray= descriptionEnglishArray.map(ele => ele.flavor_text)
+
+              
+            const formattedResponse= {
+              flavor_text_entries: descriptionArray, 
+              egg_groups: eggGroups
+            };
+            return formattedResponse;
+          },
+          }),         
     })
 });
 
-export const { useGetPokemonsQuery, useGetPokemonByUrlQuery, useGetPokemonsWithGenderQuery } = pokemonsApi ;
+export const { useGetPokemonsQuery, useGetPokemonByUrlQuery, useGetPokemonsWithGenderQuery, useGetPokemonDescriptionQuery } = pokemonsApi ;

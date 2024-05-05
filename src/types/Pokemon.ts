@@ -61,6 +61,9 @@ export type PokemonData = {
   stats: PokemonStateType[];
   types: PokemonType[];
   sprites: PokemonSpritesType;
+  height: number;
+  weight: number;
+  pokemonGender?: string[] | undefined;
 };
 
 export type PokemonRawDataType = {
@@ -99,4 +102,27 @@ export type PokemonGenderRawDataType = {
   name: string;
   pokemon_species_details: Pokemon_Species[];
   required_for_evolution: RequiredForEvolution[];
+};
+
+export type PokemonDescriptionRawDataType = {
+  isError: boolean;
+  isFetching: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  data: ResponseFromApiPokemonDescriptionType; // RawPokemonDescriptionType;
+};
+
+export type RawPokemonDescriptionType= {
+  flavor_text_entries: {flavor_text: string, language: {name: string}}[];
+  egg_groups: {name: string; url: string}[];
 }
+
+export type ResponseFromApiPokemonDescriptionType= {
+  flavor_text_entries: string[];
+  egg_groups: string[];
+}
+
+export type PokemonDescriptionPropsType= {
+  descriptionArrayData:  string[] |  null;
+}
+

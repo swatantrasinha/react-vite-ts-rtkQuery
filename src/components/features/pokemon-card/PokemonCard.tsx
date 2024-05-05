@@ -3,6 +3,7 @@ import { usePokemonDispatch, usePokemonSelector } from '../../../redux/features/
 import { savePokemonsToStore } from '../../../redux/features/reducer';
 import { PokemonCardPropsType, PokemonRawDataType } from '../../../types/Pokemon';
 import Pokemon from '../../molecules/pokemon/Pokemon';
+import { findPokemonGenderByName } from '../../../utils/filterAndStore-functions';
 
 const PokemonCard = (props: PokemonCardPropsType) => {    
     const{url}= props.pokemonProperties;
@@ -12,6 +13,9 @@ const PokemonCard = (props: PokemonCardPropsType) => {
     const rawData: PokemonRawDataType = useGetPokemonByUrlQuery<PokemonRawDataType>(pokemonId.toString());
     const dispatch = usePokemonDispatch();
     const storedPokemons = usePokemonSelector<{id:string; name: string}[]>((state) => state.filteringData.pokemonsList);
+    const pokemonsInQueries = usePokemonSelector((state) => state.api.queries);
+    const pokemonsWithgenderData = pokemonsInQueries['getPokemonsWithGender("")']?.data;
+
  
     if(rawData.isFetching) {
         return (<p>Loading Pokemon..</p>)
@@ -19,20 +23,26 @@ const PokemonCard = (props: PokemonCardPropsType) => {
         return (<p>Some error </p>);
     }
 
-    if(rawData.isSuccess) {       
-        const {data: {id, name, imageUrl, sprites, stats, types}}= rawData;
+    if(rawData.isSuccess && pokemonsWithgenderData) {       
+        const {data: {id, name, imageUrl, sprites, stats, types, weight, height}}= rawData;
+        const pokemonGender  =  findPokemonGenderByName(name,pokemonsWithgenderData) || [];
+        
         if(storedPokemons.length ==0) {
-            dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types}));
+            dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, pokemonGender}));
         } else {
             const isElementPresent= storedPokemons.find(ele => ele.id === id);
             if(!isElementPresent) {
-                dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types}));
+                dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, pokemonGender}));
             }
         } 
+        
         const pokemonData = {
             id,
             name,
             imageUrl,
+            weight, 
+            height,
+            pokemonGender,
         }
         return (
             <Pokemon pokemonProperties={pokemonData} />

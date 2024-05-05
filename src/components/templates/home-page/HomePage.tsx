@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import { usePokemonSelector , usePokemonDispatch} from '../../../redux/features/pokemon-hook';
 import { changePokemonGenderOptions, changePokemonTypesOptions } from '../../../redux/features/reducer';
 import { POKEMON_GENDER_LIST, POKEMON_TYPES_LIST } from '../../../constants/filterTypes';
-import { type HomePageProps, type PokemonsUrlType } from '../../../types/HomePage';
+import {  type PokemonsUrlType } from '../../../types/HomePage';
+import SearchSection from '../../organisms/search-section/SearchSection';
 
 
 
-const HomePage = ({setResetFilters}: HomePageProps) => {
-
+  const HomePage = () => {
+  const [resetFilters, setResetFilters] = useState<boolean>(false);
   
   const genderFilters = usePokemonSelector((state) => state.filteringData.gender);
   const typesFilters = usePokemonSelector((state) => state.filteringData.types);
@@ -65,6 +66,10 @@ const HomePage = ({setResetFilters}: HomePageProps) => {
   return (
     <StyledHomePage>
       <div className="home-page">
+      <SearchSection
+          resetFilters={resetFilters}
+          setResetFilters={setResetFilters}
+        />
         
         <main>
           {isLoading && (<p>Loading....</p>)}
