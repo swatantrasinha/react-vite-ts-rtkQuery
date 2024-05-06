@@ -33,29 +33,34 @@ const PokemonDetailsPage = () => {
     const pokemonsForPreviousAndNext= (filteredPokemonList && filteredPokemonList.length >0) ? filteredPokemonList :  pokemonList;
 
     useEffect(() => {
-      
-      const position= pokemonsForPreviousAndNext.findIndex(ele => Number(ele.id) === Number(pokemonId));
-      if(position === 0 ){
-        setPreviousUrl(null);
-        const nextPokemon= pokemonsForPreviousAndNext[position +1];
-        const nextPokemonIndex= nextPokemon.id;
-        setNextUrl(`${nextPokemonIndex}`);
-      }
-      if(position === (pokemonsForPreviousAndNext.length -1)) {
+      if(pokemonsForPreviousAndNext.length === 0 ) {
         setNextUrl(null);
-        const prevPokemon= pokemonsForPreviousAndNext[position -1];
-        const prevPokemonIndex= prevPokemon.id;
-        setPreviousUrl(`${prevPokemonIndex}`);
+        setPreviousUrl(null);
+      } else {
+        const position= pokemonsForPreviousAndNext.findIndex(ele => Number(ele.id) === Number(pokemonId));
+        if(position === 0 ){
+          setPreviousUrl(null);
+          const nextPokemon= pokemonsForPreviousAndNext[position +1];
+          const nextPokemonIndex= nextPokemon.id;
+          setNextUrl(`${nextPokemonIndex}`);
+        }
+        if(position === (pokemonsForPreviousAndNext.length -1)) {
+          setNextUrl(null);
+          const prevPokemon= pokemonsForPreviousAndNext[position -1];
+          const prevPokemonIndex= prevPokemon.id;
+          setPreviousUrl(`${prevPokemonIndex}`);
+        }
+        if((position >= 1) && (position <= (pokemonsForPreviousAndNext.length-2))) {
+          const nextPokemon= pokemonsForPreviousAndNext[position +1];
+          const nextPokemonIndex= nextPokemon.id;
+          setNextUrl(`${nextPokemonIndex}`);
+  
+          const prevPokemon= pokemonsForPreviousAndNext[position -1];
+          const prevPokemonIndex= prevPokemon.id;
+          setPreviousUrl(`${prevPokemonIndex}`);
+        }
       }
-      if((position >= 1) && (position <= (pokemonsForPreviousAndNext.length-2))) {
-        const nextPokemon= pokemonsForPreviousAndNext[position +1];
-        const nextPokemonIndex= nextPokemon.id;
-        setNextUrl(`${nextPokemonIndex}`);
-
-        const prevPokemon= pokemonsForPreviousAndNext[position -1];
-        const prevPokemonIndex= prevPokemon.id;
-        setPreviousUrl(`${prevPokemonIndex}`);
-      }
+      
     }, [pokemonId, pokemonsForPreviousAndNext]);
 
     const responseFromApi: PokemonDescriptionRawDataType = useGetPokemonDescriptionQuery<PokemonDescriptionRawDataType>(id!.toString());
@@ -119,10 +124,10 @@ const PokemonDetailsPage = () => {
                    
 
                       <div className="left-arrow-img-container">
-                        <button>
+                      <Link to={`/`}>
                           
                           <img src={closeIcon} alt="close button" />{" "}
-                        </button>
+                        </Link>
                       </div>
 
                       {nextUrl && (
