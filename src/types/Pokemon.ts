@@ -126,3 +126,67 @@ export type PokemonDescriptionPropsType= {
   descriptionArrayData:  string[] |  null;
 }
 
+
+export type Ability= {
+  ability: {
+    name:string; 
+  }
+}
+export type Stat_Data = {
+  base_stat: number; 
+  stat: { name: string }
+};
+
+export type PropertiesSectionPropsType= {
+  dataForPokemonProperty :{
+    name: string;
+    eggGroupsData: string[] | undefined;
+    weight: number | undefined;
+    height: number | undefined;
+    abilities?: Ability[];
+    stats?: Stat_Data[];
+  }
+}; 
+
+
+export type PokemonEvolutionDataType= {
+   
+    chain: {
+      species: {
+        url: string;
+      }
+      evolves_to: {
+        species: {url: string};
+        evolves_to : {species: {url: string}}[]
+      }[]
+    }
+   
+};
+
+export type PokemonEvolutionRawDataType = {
+  isError: boolean;
+  isFetching: boolean;
+  isLoading: boolean;
+  isSuccess: boolean;
+  data: PokemonEvolutionDataType;
+};
+
+export type Variety= {
+    is_default: boolean;
+    pokemon: {
+      name: string;
+      url: string;
+  }
+};
+
+export type PokemonEvolutionPhaseRawDataType = {
+  data: {
+    varieties : Variety[]
+  }
+}
+
+export type PhaseOfPokemonDataType= {
+  evolution1Details:  {id: string; name:string; imageUrl: string},
+  evolution2Details:  {id: string; name:string; imageUrl: string},
+  evolution3Details:  {id: string; name:string; imageUrl: string},
+}

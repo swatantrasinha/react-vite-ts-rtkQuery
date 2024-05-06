@@ -13,9 +13,8 @@ const PokemonCard = (props: PokemonCardPropsType) => {
     const rawData: PokemonRawDataType = useGetPokemonByUrlQuery<PokemonRawDataType>(pokemonId.toString());
     const dispatch = usePokemonDispatch();
     const storedPokemons = usePokemonSelector<{id:string; name: string}[]>((state) => state.filteringData.pokemonsList);
-    const pokemonsInQueries = usePokemonSelector((state) => state.api.queries);
-    const pokemonsWithgenderData = pokemonsInQueries['getPokemonsWithGender("")']?.data;
 
+    const pokemonDataFromStore= usePokemonSelector((state) => state.filteringData.pokemonGender);
  
     if(rawData.isFetching) {
         return (<p>Loading Pokemon..</p>)
@@ -23,12 +22,13 @@ const PokemonCard = (props: PokemonCardPropsType) => {
         return (<p>Some error </p>);
     }
 
-    if(rawData.isSuccess && pokemonsWithgenderData) {       
-        const {data: {id, name, imageUrl, sprites, stats, types, weight, height, abilities}}= rawData;
-        
-        
-        
-        const pokemonGender  =  findPokemonGenderByName(name,pokemonsWithgenderData) || [];
+    if(rawData.isSuccess && pokemonDataFromStore) {
+        const {data: {id, name, imageUrl, 
+            sprites, stats, types, weight, height, abilities
+        }}= rawData;
+
+       
+        const pokemonGender  =  findPokemonGenderByName(name,pokemonDataFromStore) || [];
         
         if(storedPokemons.length ==0) {
             dispatch(savePokemonsToStore({id,name, imageUrl, sprites, stats, types, weight, height, abilities, pokemonGender}));
@@ -43,11 +43,12 @@ const PokemonCard = (props: PokemonCardPropsType) => {
             id,
             name,
             imageUrl,
-            weight, 
-            height,
-            abilities,
-            pokemonGender,
-            stats,
+
+            // weight, 
+            // height,
+            // abilities,
+            // pokemonGender,
+            // stats,
         }
         
         

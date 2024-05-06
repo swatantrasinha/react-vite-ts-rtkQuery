@@ -1,8 +1,17 @@
+import { usePokemonDispatch, usePokemonSelector } from '../../../redux/features/pokemon-hook';
+import { savePokemonsGenderData } from '../../../redux/features/reducer';
 import { PokemonListProps, type PokemonBasicData } from '../../../types/Pokemon';
 import PokemonCard from '../../features/pokemon-card/PokemonCard';
 import FilteredPokemons from './FilteredPokemons';
 
 const PokemonList = ({pokemonList, isFilterApplied, setResetFilters}: PokemonListProps) => {
+  
+  const pokemonsInQueries = usePokemonSelector((state) => state.api.queries);
+  const pokemonsWithgenderData = pokemonsInQueries['getPokemonsWithGender("")']?.data;
+  
+  const dispatch = usePokemonDispatch();
+  dispatch(savePokemonsGenderData(pokemonsWithgenderData));
+  
   
   if(isFilterApplied) {
     return (

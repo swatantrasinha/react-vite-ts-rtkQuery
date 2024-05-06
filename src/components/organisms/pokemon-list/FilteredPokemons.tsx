@@ -5,7 +5,7 @@ import { addFilteredPokemonsToStore, removeUnfilteredPokemonsFromStore } from '.
 import { FilteredPokemonsPropsType, PokemonData } from '../../../types/Pokemon';
 import Pokemon from '../../molecules/pokemon/Pokemon';
 import { STAT_RANGE } from '../../../types/stat-range-type';
-// import PokemonCard, { PokemonData } from '../../features/pokemon-card/PokemonCard';
+
 
 const FilteredPokemons = ({uniqueId, pokemon, setResetFilters}: FilteredPokemonsPropsType) => {
     const dispatch = usePokemonDispatch(); 
@@ -49,7 +49,6 @@ const FilteredPokemons = ({uniqueId, pokemon, setResetFilters}: FilteredPokemons
   
   return (
       <div key={uniqueId} className='pokemon'>
-              <span>Filteed Pokemon</span>
               <Pokemon pokemonProperties={pokemon as PokemonData} />
       </div>
   )

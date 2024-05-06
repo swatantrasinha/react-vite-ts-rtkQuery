@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledPokemonDetails= styled.div`
+export const StyledPokemonDetailsPage= styled.div`
 .pokemon-description {
     width: 756px;
     margin: auto;
@@ -145,4 +145,4 @@ export const StyledPokemonDetails= styled.div`
 }
 `;
 
-export default StyledPokemonDetails;
+export default StyledPokemonDetailsPage;

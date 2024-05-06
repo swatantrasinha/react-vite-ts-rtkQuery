@@ -1,15 +1,19 @@
 import {StyledPokemon} from './Pokemon.style';
-import { type PokemonData, type PokemonPropsType } from '../../../types/Pokemon';
+import { PokemonPropsTypeWithFilter, type PokemonPropsType } from '../../../types/Pokemon';
 import { Link } from 'react-router-dom';
 import { generatePokemonId } from '../../../utils/string-manipulation';
 
 const Pokemon = (props: PokemonPropsType) => {
 
-    const {name, imageUrl, id, weight, height, abilities, pokemonGender, stats}= props.pokemonProperties as PokemonData;
+    const {name, imageUrl, id,
+        //  weight, height, abilities, pokemonGender, stats
+        }= props.pokemonProperties as PokemonPropsTypeWithFilter; //  PokemonData;
     
 
 
-    const pokemonDataForDetailsPage = { name,imageUrl, weight, height, abilities, pokemonGender, stats };
+    const pokemonDataForDetailsPage = { name,imageUrl, 
+    //    weight, height, abilities, pokemonGender, stats
+     };
     return (
         <StyledPokemon>
         <Link 

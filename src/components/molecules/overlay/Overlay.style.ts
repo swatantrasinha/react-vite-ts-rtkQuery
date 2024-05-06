@@ -6,7 +6,7 @@ export const StyledOverlay= styled.div`
     position: absolute;
     background-color: red;
     left: 0%;
-    top: 50%;
+    top: 15%;
     border: 1px solid #FFFFFF;
     background: #2E3156;
     color: white;

@@ -55,7 +55,7 @@ export const findPokemonGenderByName = (pokemonName: string,pokemonsWithgenderDa
     }
     checkandAddIfGenderInList('male');
     checkandAddIfGenderInList('female');
-    checkandAddIfGenderInList('genderless');
+    checkandAddIfGenderInList('genderless');   
     return result;
 };
 
@@ -84,4 +84,7 @@ export const checkStatsFilters = (pokemon:PokemonData, statsFilter:STAT_RANGE): 
     }
     return result;
 }
+
+
+
 

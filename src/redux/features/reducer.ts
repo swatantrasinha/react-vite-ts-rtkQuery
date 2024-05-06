@@ -4,6 +4,7 @@ import { filterAndStore } from "../../utils/filterAndStore-functions";
 import { type PokemonData } from "../../types/Pokemon";
 import {type STAT_RANGE} from '../../types/stat-range-type';
 
+
 type InitialStateType ={
     types: string[];
     gender: string[];
@@ -11,6 +12,7 @@ type InitialStateType ={
     stats:  STAT_RANGE | null;
     pokemonsList: PokemonData[] | [];
     filteredPokemonsList: PokemonData[] | [];
+    pokemonGender: {[key:string]: string[]};
 }
 const initialState:InitialStateType = {
     types: filterAndStore(typeOptions),
@@ -19,7 +21,7 @@ const initialState:InitialStateType = {
     stats: null,
     pokemonsList: [],
     filteredPokemonsList:[],
-
+    pokemonGender: {male: [], female:[], genderless:[]},
 }
 
 
@@ -39,6 +41,10 @@ export const myReducer= createSlice({
         savePokemonsStatsFilters(state, action){
             state.stats=action.payload
         },
+        savePokemonsGenderData(state, action){
+            state.pokemonGender=action.payload
+        },
+      
         savePokemonsToStore(state,action: PayloadAction<PokemonData>){
             if(state.pokemonsList.length === 20) {
                 state.pokemonsList.length=0;
@@ -81,7 +87,8 @@ export const {
     changePokemonTypesOptions, 
     saveSearchInputValue,
     savePokemonsStatsFilters,
+    savePokemonsGenderData,
     savePokemonsToStore, 
     addFilteredPokemonsToStore, 
-    removeUnfilteredPokemonsFromStore
+    removeUnfilteredPokemonsFromStore,
     }= myReducer.actions;
